@@ -12,3 +12,4 @@ Follow `AGENTS.md` and `docs/PLAN.md`. Do not rediscover the product from scratc
 - Do not add ML, an LLM, paid APIs, Tailwind, or a deployment. Do not import the monolithic `d3` package.
 - The airfoil coefficients are a documented synthetic surrogate. Do not describe them as XFOIL or CFD output.
 - Keep `pnpm install && pnpm dev` working after M0. Do not commit `.env`, secrets, or `node_modules`.
+- If a command, install, CI watch, or generation step makes no progress for 5 minutes, retry it once. If the retry stalls the same way, log it in `docs/PROGRESS.md` and `docs/QUESTIONS.md` and continue with the next independent task. Do not sit idle.

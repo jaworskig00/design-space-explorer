@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-24 — stall rule
+
+- What: A step with no progress for 5 minutes is retried once, then logged and skipped in favor of the next independent task.
+- Verified: Written into `AGENTS.md`, `docs/PLAN.md`, and `.cursor/rules`.
+- Follow-ups: none. M0 CI run 40058764388 is green. Dataset is generated locally and not pushed yet.
+
 ## 2026-10-24 — M0.6 CI
 
 - What: GitHub Actions runs lint, typecheck, unit tests, build, the gzip budget, and Playwright Chromium. README badge points at `ci.yml`. No Python job yet.

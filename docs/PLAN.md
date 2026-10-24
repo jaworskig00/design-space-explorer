@@ -118,6 +118,8 @@ Do not start these during v1.
 
 After every task below: verify, run the checks named in `AGENTS.md`, commit, push, tick the box, append `docs/PROGRESS.md`. If CI fails, fix it before the next task. Commit subjects stay specific. Do not batch several tasks into one commit.
 
+If a step makes no progress for 5 minutes, retry it once. If the retry stalls the same way, log it and move to the next independent task. Do not sit idle.
+
 Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0-m1`, `v0.3.0-m2`, `v0.4.0-m3`, `v0.5.0-m4`, `v0.6.0-m5`, `v0.7.0-m6`, `v0.8.0-m7`, `v0.9.0-m8`, `v1.0.0` after M9. Update `CHANGELOG.md` in the tag commit.
 
 ---

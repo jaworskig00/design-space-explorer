@@ -21,6 +21,8 @@ Do not stop to ask questions. If something is ambiguous, pick the option already
 
 Stop only for a true blocker no default can solve (missing credentials, no permission to push). Log it in `docs/QUESTIONS.md`, skip to the next independent task, and keep going.
 
+If a command, install, CI watch, browser check, or generation step makes no progress for 5 minutes, retry it once. If that retry stalls or fails the same way, append the command and the error to `docs/PROGRESS.md` and `docs/QUESTIONS.md`, then continue with the next independent task. Do not wait silently on a hung process.
+
 Verify visual work yourself. Run the app, take Playwright screenshots, check them against the acceptance criteria, and keep the key frames in `docs/screenshots/`.
 
 After M0, every commit must leave `pnpm install && pnpm dev` working.
@@ -33,12 +35,12 @@ At the end of M9: polish the README, tag `v1.0.0`, and list anything still open 
 
 These exist only after the matching milestone. Do not invent parallel scripts.
 
-| When | Command |
-| --- | --- |
+| When  | Command                                                                              |
+| ----- | ------------------------------------------------------------------------------------ |
 | M0.2+ | `pnpm install`, `pnpm dev`, `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` |
-| M0.4+ | `pnpm e2e` (Playwright against `pnpm preview`) |
-| M1+ | `cd data && uv sync && uv run python generate.py` |
-| M1+ | `cd data && uv run python -m unittest discover -s tests -v` |
+| M0.4+ | `pnpm e2e` (Playwright against `pnpm preview`)                                       |
+| M1+   | `cd data && uv sync && uv run python generate.py`                                    |
+| M1+   | `cd data && uv run python -m unittest discover -s tests -v`                          |
 
 Node on CI is 22 (`.nvmrc`). Package manager is pnpm. Python is 3.12 via uv, with NumPy as the only data dependency.
 
@@ -92,10 +94,12 @@ The checkbox is the contract. A task is done only when its acceptance line is tr
 Before M0.1, run the checklist at the top of `docs/PLAN.md` and record the result in `docs/PROGRESS.md`.
 
 <!-- BEGIN: personal-status -->
+
 # ~/Personal STATUS.md
 
 - This repository lives under `/Users/greg/Personal`.
 - Session start: open `/Users/greg/Personal/STATUS.md`, find this folder, continue from **Next**. Do not rediscover the project from README if Next is clear.
 - Session end (even if not asked): rewrite `/Users/greg/Personal/STATUS.md` — update only this project's block and the top indexes; never delete other projects; never commit STATUS.md here.
 - Protocol: `/Users/greg/Personal/AGENTS.md`
+
 <!-- END: personal-status -->
