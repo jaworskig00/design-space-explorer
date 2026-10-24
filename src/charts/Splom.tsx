@@ -31,66 +31,97 @@ export function Splom() {
       const dpr = resizeCanvas(canvas, size.width, size.height)
       const ctx = canvas.getContext('2d')
       if (!ctx) return
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      ctx.clearRect(0, 0, size.width, size.height)
+      const image = ctx.createImageData(canvas.width, canvas.height)
+      const pixels = image.data
       const mask = useExplorer.getState().mask
       svg.selectAll('*').remove()
       for (let row = 0; row < n; row += 1) {
-        for (let col = row; col < n; col += 1) {
+        for (let col = row + 1; col < n; col += 1) {
           const xName = columns[col]
           const yName = columns[row]
           if (!xName || !yName) continue
           const x0 = col * cell
           const y0 = row * cell
-          if (row === col) {
-            drawHist(
-              ctx,
-              table.columns[xName],
-              table.meta[xName].domain,
-              mask,
-              x0 + 4,
-              y0 + 4,
-              cell - 8,
-            )
-          } else {
-            const x = columnScale(table, xName, [x0 + 4, x0 + cell - 4], false)
-            const y = columnScale(table, yName, [y0 + cell - 4, y0 + 4], false)
-            const xs = table.columns[xName]
-            const ys = table.columns[yName]
-            for (let i = 0; i < table.n; i += 1) {
-              ctx.fillStyle = mask[i]
-                ? 'rgba(61,220,151,0.35)'
-                : 'rgba(147,160,181,0.08)'
-              ctx.fillRect(x(xs[i] ?? 0) ?? 0, y(ys[i] ?? 0) ?? 0, 1.2, 1.2)
+          const x = columnScale(table, xName, [x0 + 4, x0 + cell - 4], false)
+          const y = columnScale(table, yName, [y0 + cell - 4, y0 + 4], false)
+          const xs = table.columns[xName]
+          const ys = table.columns[yName]
+          const left = Math.round((x0 + 4) * dpr)
+          const right = Math.round((x0 + cell - 4) * dpr)
+          const top = Math.round((y0 + 4) * dpr)
+          const bottom = Math.round((y0 + cell - 4) * dpr)
+          for (let i = 0; i < table.n; i += 1) {
+            const px = Math.round((x(xs[i] ?? 0) ?? 0) * dpr)
+            const py = Math.round((y(ys[i] ?? 0) ?? 0) * dpr)
+            if (px < left || px >= right || py < top || py >= bottom) continue
+            const offset = (py * canvas.width + px) * 4
+            if (mask[i]) {
+              pixels[offset] = 61
+              pixels[offset + 1] = 220
+              pixels[offset + 2] = 151
+              pixels[offset + 3] = 140
+            } else if (pixels[offset + 3] === 0) {
+              pixels[offset] = 147
+              pixels[offset + 1] = 160
+              pixels[offset + 2] = 181
+              pixels[offset + 3] = 40
             }
-            const cellBrush = brush()
-              .extent([
-                [x0 + 4, y0 + 4],
-                [x0 + cell - 4, y0 + cell - 4],
-              ])
-              .on(
-                'end',
-                (event: {
-                  selection: [[number, number], [number, number]] | null
-                  sourceEvent: Event | null
-                }) => {
-                  if (!event.sourceEvent) return
-                  if (!event.selection) {
-                    useExplorer.getState().setBrush(xName, null, 'pointer')
-                    useExplorer.getState().setBrush(yName, null, 'pointer')
-                    return
-                  }
-                  const [[sx0, sy0], [sx1, sy1]] = event.selection
-                  useExplorer
-                    .getState()
-                    .setBrush(xName, [x.invert(sx0), x.invert(sx1)], 'pointer')
-                  useExplorer
-                    .getState()
-                    .setBrush(yName, [y.invert(sy0), y.invert(sy1)], 'pointer')
-                },
-              )
-            svg.append('g').call(cellBrush)
           }
+        }
+      }
+      ctx.putImageData(image, 0, 0)
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      for (let index = 0; index < n; index += 1) {
+        const name = columns[index]
+        if (!name) continue
+        const x0 = index * cell
+        const y0 = index * cell
+        drawHist(
+          ctx,
+          table.columns[name],
+          table.meta[name].domain,
+          mask,
+          x0 + 4,
+          y0 + 4,
+          cell - 8,
+        )
+      }
+      for (let row = 0; row < n; row += 1) {
+        for (let col = row + 1; col < n; col += 1) {
+          const xName = columns[col]
+          const yName = columns[row]
+          if (!xName || !yName) continue
+          const x0 = col * cell
+          const y0 = row * cell
+          const x = columnScale(table, xName, [x0 + 4, x0 + cell - 4], false)
+          const y = columnScale(table, yName, [y0 + cell - 4, y0 + 4], false)
+          const cellBrush = brush()
+            .extent([
+              [x0 + 4, y0 + 4],
+              [x0 + cell - 4, y0 + cell - 4],
+            ])
+            .on(
+              'end',
+              (event: {
+                selection: [[number, number], [number, number]] | null
+                sourceEvent: Event | null
+              }) => {
+                if (!event.sourceEvent) return
+                if (!event.selection) {
+                  useExplorer.getState().setBrush(xName, null, 'pointer')
+                  useExplorer.getState().setBrush(yName, null, 'pointer')
+                  return
+                }
+                const [[sx0, sy0], [sx1, sy1]] = event.selection
+                useExplorer
+                  .getState()
+                  .setBrush(xName, [x.invert(sx0), x.invert(sx1)], 'pointer')
+                useExplorer
+                  .getState()
+                  .setBrush(yName, [y.invert(sy0), y.invert(sy1)], 'pointer')
+              },
+            )
+          svg.append('g').call(cellBrush)
         }
       }
       canvas.setAttribute(
