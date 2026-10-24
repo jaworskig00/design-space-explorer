@@ -138,7 +138,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M0.3 Unit runner and bundle budget
 
-- [ ] Vitest is the test runner. `scripts/check-bundle-size.mjs` gzips every `dist/assets/*.js` and exits non-zero above 500 KB. `pnpm build` runs the check after `vite build`, or a `pnpm size` script does and CI calls it.
+- [x] Vitest is the test runner. `scripts/check-bundle-size.mjs` gzips every `dist/assets/*.js` and exits non-zero above 500 KB. `pnpm build` runs the check after `vite build`, or a `pnpm size` script does and CI calls it.
 - Acceptance: a deliberately huge string is not required; the empty build passes. The script fails in a unit-level way if pointed at a buffer larger than the budget (test the function, not the real bundle).
 - Verify: `pnpm test && pnpm build`.
 

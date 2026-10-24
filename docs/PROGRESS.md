@@ -14,6 +14,12 @@ Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 - Verified: `pnpm lint`, `pnpm typecheck`, `pnpm test`.
 - Follow-ups: Charts replace the empty states from M3 onward.
 
+## 2026-10-24 — M0.3 bundle budget
+
+- What: Vitest covers the 500 KB gzip predicate. `pnpm build` fails when a `dist/assets` script is over that budget. Latin-only IBM Plex so the static font payload stays small.
+- Verified: `pnpm test && pnpm build` (JS gzip about 68 KB).
+- Follow-ups: none.
+
 ## 2026-10-24 — planning docs
 
 - What: Added the v1 plan, decisions, agent rules, and repo skeleton. No application code.
