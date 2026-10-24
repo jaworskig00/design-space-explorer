@@ -100,6 +100,7 @@ export function ParallelCoordinates() {
         ctx.stroke(path)
       })
       ctx.globalAlpha = 1
+      recordDraw('pcp', started)
       canvas.setAttribute(
         'aria-label',
         `Parallel coordinates, ${state.matchCount} of ${table.n} designs`,
@@ -211,7 +212,6 @@ export function ParallelCoordinates() {
           )
         }
       })
-      recordDraw('pcp', started)
     }
 
     svgElement.dataset.motion = duration === 0 ? 'off' : 'on'
