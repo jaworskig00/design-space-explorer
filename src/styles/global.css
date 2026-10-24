@@ -8,7 +8,11 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(1200px 500px at 10% -10%, rgb(61 220 151 / 8%), transparent 55%),
+    radial-gradient(
+      1200px 500px at 10% -10%,
+      rgb(61 220 151 / 8%),
+      transparent 55%
+    ),
     var(--bg);
 }
 
@@ -136,6 +140,90 @@ select:hover {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.chart {
+  position: relative;
+  flex: 1;
+  min-height: 240px;
+}
+
+.chart.short {
+  min-height: 160px;
+}
+
+.chart canvas,
+.chart svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chart .overlay {
+  pointer-events: none;
+}
+
+.ranges {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+.ranges label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 128px;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.ranges input {
+  width: 58px;
+  background: #10151c;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+.inline-controls,
+.toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+dl {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 12px;
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+}
+
+dt {
+  color: var(--muted);
+}
+
+dd {
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.panel svg[data-testid='shape-preview'] {
+  width: 100%;
+  height: 90px;
+  background: #10151c;
+  border-radius: 8px;
 }
 
 @media (max-width: 980px) {

@@ -1,0 +1,14 @@
+{
+  "x": "cd",
+  "y": "cl",
+  "xDir": "min",
+  "yDir": "max",
+  "rows": [
+    { "id": 0, "cl": 0.5, "cd": 0.02, "feasible": true, "onFront": true },
+    { "id": 1, "cl": 0.8, "cd": 0.03, "feasible": true, "onFront": false },
+    { "id": 2, "cl": 1.0, "cd": 0.025, "feasible": true, "onFront": true },
+    { "id": 3, "cl": 1.2, "cd": 0.04, "feasible": true, "onFront": true },
+    { "id": 4, "cl": 0.4, "cd": 0.05, "feasible": true, "onFront": false },
+    { "id": 5, "cl": 0.9, "cd": 0.015, "feasible": false, "onFront": false }
+  ]
+}

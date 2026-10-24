@@ -168,19 +168,19 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M1.1 Model and geometry
 
-- [ ] `data/pyproject.toml` depends on NumPy only and requires Python `>=3.12`. Implement `naca.py` and `model.py` exactly as ADR-002. `data/MODEL.md` leads with the honesty paragraph and the formulas. `data/SCHEMA.md` documents column order, units, the feasible predicate, and that `id` is the row index.
+- [x] `data/pyproject.toml` depends on NumPy only and requires Python `>=3.12`. Implement `naca.py` and `model.py` exactly as ADR-002. `data/MODEL.md` leads with the honesty paragraph and the formulas. `data/SCHEMA.md` documents column order, units, the feasible predicate, and that `id` is the row index.
 - Acceptance: importing the model does not need the network. Formulas match ADR-002.
 - Verify: `cd data && uv sync`.
 
 ### M1.2 Generator
 
-- [ ] `data/generate.py` writes `public/data/designs.f32` and `public/data/schema.json` for n = 10,000, seed 42. Column-major float32. Also write `data/fixtures/naca-golden.json` for exact 0012 and 2412 (81 cosine-spaced points, upper and lower surfaces).
+- [x] `data/generate.py` writes `public/data/designs.f32` and `public/data/schema.json` for n = 10,000, seed 42. Column-major float32. Also write `data/fixtures/naca-golden.json` for exact 0012 and 2412 (81 cosine-spaced points, upper and lower surfaces).
 - Acceptance: binary length is 400,000 bytes. Schema column order matches ADR-002. Running the script twice is byte-identical.
 - Verify: run it twice and `cmp` the outputs.
 
 ### M1.3 Python tests
 
-- [ ] `data/tests/` uses `unittest`. Assert the band on every row, determinism of a 128-row sample, closed trailing edge (first and last point meet within `1e-6`), and the golden file's 0012 thickness at `x = 0.3` is stable across a second generate. Commit `data/fixtures/pareto-6.json` from ADR-007 for later; the Python suite does not need to implement Pareto.
+- [x] `data/tests/` uses `unittest`. Assert the band on every row, determinism of a 128-row sample, closed trailing edge (first and last point meet within `1e-6`), and the golden file's 0012 thickness at `x = 0.3` is stable across a second generate. Commit `data/fixtures/pareto-6.json` from ADR-007 for later; the Python suite does not need to implement Pareto.
 - Acceptance: `cd data && uv run python -m unittest discover -s tests -v` passes. If the band fails, adjust coefficients per ADR-002 and record the change. Do not commit a failing binary.
 - Verify: that unittest command.
 
@@ -196,13 +196,13 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M2.1 Loader
 
-- [ ] `src/data/loadDesigns.ts` fetches the schema and the binary and returns column `Float32Array`s. `src/data/types.ts` exports the column name union. A Vitest test uses a tiny hand-built binary (4 rows) and checks a known value. The app loader reads `/data/designs.f32`.
+- [x] `src/data/loadDesigns.ts` fetches the schema and the binary and returns column `Float32Array`s. `src/data/types.ts` exports the column name union. A Vitest test uses a tiny hand-built binary (4 rows) and checks a known value. The app loader reads `/data/designs.f32`.
 - Acceptance: the test passes without Playwright. Column order is asserted against `schema.json`.
 - Verify: `pnpm test`.
 
 ### M2.2 Filter mask
 
-- [ ] `src/state/filter.ts` is pure: ranges in, `Uint8Array` out, AND across columns, missing range means "all". Inclusive bounds. Vitest covers overlaps, a column left open, and the 10k budget (`< 2 ms` for one pass over the real table, or over a local 10k float32 fixture if the fetch is awkward in Vitest — prefer reading the file from disk).
+- [x] `src/state/filter.ts` is pure: ranges in, `Uint8Array` out, AND across columns, missing range means "all". Inclusive bounds. Vitest covers overlaps, a column left open, and the 10k budget (`< 2 ms` for one pass over the real table, or over a local 10k float32 fixture if the fetch is awkward in Vitest — prefer reading the file from disk).
 - Acceptance: budget assertion is in the test output's passing list.
 - Verify: `pnpm test`.
 
@@ -214,13 +214,13 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M2.4 URL
 
-- [ ] `src/lib/urlState.ts` roundtrips the ADR-004 object through lz-string. Hash key `s`. Malformed hashes are ignored. `App` writes the hash with a short debounce and `replaceState`, and reads it once on load.
+- [x] `src/lib/urlState.ts` roundtrips the ADR-004 object through lz-string. Hash key `s`. Malformed hashes are ignored. `App` writes the hash with a short debounce and `replaceState`, and reads it once on load.
 - Acceptance: Vitest roundtrip, including `selected: null` and an empty brush map. A Playwright test can wait until M8; a unit test is enough here.
 - Verify: `pnpm test`.
 
 ### M2.5 Dashboard wired to the count
 
-- [ ] On load, show the count `10,000` and the live region `10000 of 10000 designs`. Number inputs for each brushable column call `setBrush`. Reset clears them. `data-testid` values: `design-count`, `filter-count`, `brush-<column>-min`, `brush-<column>-max`, `reset-filters`.
+- [x] On load, show the count `10,000` and the live region `10000 of 10000 designs`. Number inputs for each brushable column call `setBrush`. Reset clears them. `data-testid` values: `design-count`, `filter-count`, `brush-<column>-min`, `brush-<column>-max`, `reset-filters`.
 - Acceptance: Playwright fills `brush-alpha_deg-min` and `max` with `0` and `4`, and the filter count drops below 10,000 and stays above 0. Reload keeps the hash and the count.
 - Verify: `pnpm build && pnpm e2e`.
 
@@ -296,7 +296,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M6.1 Front algorithm
 
-- [ ] `src/lib/pareto.ts` implements ADR-007 for two objectives and a direction each. Infeasible rows are excluded. Vitest uses `data/fixtures/pareto-6.json` and expects the three front ids described in the ADR.
+- [x] `src/lib/pareto.ts` implements ADR-007 for two objectives and a direction each. Infeasible rows are excluded. Vitest uses `data/fixtures/pareto-6.json` and expects the three front ids described in the ADR.
 - Acceptance: the fixture test passes, including the infeasible point that would otherwise be non-dominated.
 - Verify: `pnpm test`.
 
@@ -318,7 +318,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M7.2 Shape
 
-- [ ] `src/data/airfoilShape.ts` ports the NACA equations. Vitest compares 0012 and 2412 to `data/fixtures/naca-golden.json` within `1e-5`. `src/charts/ShapePreview.tsx` draws the closed path for the pinned id, or a prompt when nothing is pinned.
+- [x] `src/data/airfoilShape.ts` ports the NACA equations. Vitest compares 0012 and 2412 to `data/fixtures/naca-golden.json` within `1e-5`. `src/charts/ShapePreview.tsx` draws the closed path for the pinned id, or a prompt when nothing is pinned.
 - Acceptance: the golden test passes. `data-testid="shape-preview"` is present once a design is pinned.
 - Verify: `pnpm test`.
 

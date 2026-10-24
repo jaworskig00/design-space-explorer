@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-24 — M1 dataset and linked views
+
+- What: Generated 10,000 synthetic NACA rows and wired parallel coordinates, scatter, SPLOM, Pareto, histograms, details, and the shape outline. Brushing angle of attack filters every view and survives reload.
+- Verified: Python unittest, `pnpm lint`, `pnpm typecheck`, `pnpm test` (11), `pnpm build` (JS gzip 113 KB), `pnpm e2e` (2 passed).
+- Follow-ups: screenshots, keyboard/perf specs, README media, and the v1 tag. Pareto canvas brush and SPLOM 50 ms budget are not measured yet.
+
 ## 2026-10-24 — stall rule
 
 - What: A step with no progress for 5 minutes is retried once, then logged and skipped in favor of the next independent task.

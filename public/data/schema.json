@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "n": 10000,
+  "endian": "little",
+  "dtype": "float32",
+  "order": "column-major",
+  "seed": 42,
+  "model": "synthetic-airfoil-v1",
+  "columns": [
+    {
+      "name": "camber",
+      "label": "Camber",
+      "unit": "fraction of chord",
+      "role": "input",
+      "domain": [
+        0.0,
+        0.09
+      ]
+    },
+    {
+      "name": "camber_pos",
+      "label": "Camber position",
+      "unit": "fraction of chord",
+      "role": "input",
+      "domain": [
+        0.2,
+        0.7
+      ]
+    },
+    {
+      "name": "thickness",
+      "label": "Thickness",
+      "unit": "fraction of chord",
+      "role": "input",
+      "domain": [
+        0.06,
+        0.24
+      ]
+    },
+    {
+      "name": "alpha_deg",
+      "label": "Angle of attack",
+      "unit": "deg",
+      "role": "input",
+      "domain": [
+        -4.0,
+        16.0
+      ]
+    },
+    {
+      "name": "log10_reynolds",
+      "label": "log10 Reynolds",
+      "unit": "log10(Re)",
+      "role": "input",
+      "domain": [
+        5.301029995663981,
+        6.698970004336019
+      ]
+    },
+    {
+      "name": "cl",
+      "label": "Lift coefficient",
+      "unit": "Cl",
+      "role": "output",
+      "domain": [
+        -0.40711672961711887,
+        1.9087946897745132
+      ]
+    },
+    {
+      "name": "cd",
+      "label": "Drag coefficient",
+      "unit": "Cd",
+      "role": "output",
+      "domain": [
+        0.006488987458869815,
+        0.0673772872146219
+      ]
+    },
+    {
+      "name": "ld",
+      "label": "Lift to drag",
+      "unit": "Cl/Cd",
+      "role": "output",
+      "domain": [
+        -35.209747314453125,
+        64.45361328125
+      ]
+    },
+    {
+      "name": "cm",
+      "label": "Moment coefficient",
+      "unit": "Cm,c/4",
+      "role": "output",
+      "domain": [
+        -0.07209581136703491,
+        0.0014136433601379395
+      ]
+    },
+    {
+      "name": "stall_margin_deg",
+      "label": "Stall margin",
+      "unit": "deg",
+      "role": "output",
+      "domain": [
+        -8.53170298576355,
+        20.484350671768187
+      ]
+    }
+  ],
+  "feasible": "stall_margin_deg >= 0 and thickness in [0.08, 0.20]"
+}
