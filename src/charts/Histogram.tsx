@@ -42,6 +42,10 @@ export function Histogram() {
       const y = scaleLinear()
         .domain([0, max])
         .range([size.height - 20, 8])
+      svgElement.setAttribute(
+        'aria-label',
+        `Distribution histogram, ${state.matchCount} of ${table.n} designs`,
+      )
       svg.selectAll('*').remove()
       all.forEach((count, index) => {
         const x0 = x(lo + (index * span) / BINS) ?? 0

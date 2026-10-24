@@ -160,14 +160,14 @@ select:hover {
   height: 100%;
 }
 
-.chart .overlay {
+.chart canvas.overlay {
   pointer-events: none;
 }
 
 .ranges {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
-  overflow-x: auto;
 }
 
 .ranges label {

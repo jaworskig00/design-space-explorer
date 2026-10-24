@@ -2,6 +2,7 @@ import { brush } from 'd3-brush'
 import { select } from 'd3-selection'
 import { useLayoutEffect, useRef } from 'react'
 import { COLUMNS, getTable } from '../data/columns.ts'
+import { recordDraw } from '../e2eApi.ts'
 import { useExplorer } from '../state/explorerStore.ts'
 import { resizeCanvas } from './geometry.ts'
 import { columnScale } from './scales.ts'
@@ -22,6 +23,7 @@ export function Splom() {
     const table = getTable()
     const svg = select(svgElement)
     const draw = () => {
+      const started = performance.now()
       const columns = useExplorer.getState().splomColumns
       const n = columns.length
       if (n < 2) return
@@ -95,6 +97,7 @@ export function Splom() {
         'aria-label',
         `Scatterplot matrix, ${useExplorer.getState().matchCount} of ${table.n} designs`,
       )
+      recordDraw('splom', started)
     }
     draw()
     const unsubscribe = useExplorer.subscribe((state, previous) => {
@@ -143,7 +146,7 @@ function drawHist(
   y: number,
   size: number,
 ) {
-  const bins = 20
+  const bins = 40
   const all = new Array<number>(bins).fill(0)
   const focus = new Array<number>(bins).fill(0)
   const span = domain[1] - domain[0] || 1

@@ -186,7 +186,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M1.4 CI data job
 
-- [ ] Add a `data` job to `ci.yml`: setup uv, Python 3.12, `uv sync`, unittest. Do not regenerate or overwrite the binary in CI.
+- [x] Add a `data` job to `ci.yml`: setup uv, Python 3.12, `uv sync`, unittest. Do not regenerate or overwrite the binary in CI.
 - Acceptance: both jobs are green on the push that adds them.
 - Verify: `gh run list` for that commit.
 
@@ -208,7 +208,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M2.3 Store
 
-- [ ] Zustand store as ADR-004. Actions: `setBrush`, `clearBrushes`, `setHover`, `setSelected`, axis reorder, invert, view column setters. Mask and `matchCount` update inside brush actions. The table is a module singleton set by `initTable`, not a store field.
+- [x] Zustand store as ADR-004. Actions: `setBrush`, `clearBrushes`, `setHover`, `setSelected`, axis reorder, invert, view column setters. Mask and `matchCount` update inside brush actions. The table is a module singleton set by `initTable`, not a store field.
 - Acceptance: a store test sets two brushes and reads `matchCount` without rendering React.
 - Verify: `pnpm test`.
 
@@ -230,19 +230,19 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M3.1 Canvas scatter
 
-- [ ] `src/charts/Scatter.tsx`: canvas marks, SVG axes from `d3-scale` and `d3-axis`, point color from the color column via `cividis`. In-filter points brighter; out-of-filter points faint. ResizeObserver. Cleanup on unmount.
+- [x] `src/charts/Scatter.tsx`: canvas marks, SVG axes from `d3-scale` and `d3-axis`, point color from the color column via `cividis`. In-filter points brighter; out-of-filter points faint. ResizeObserver. Cleanup on unmount.
 - Acceptance: the region is no longer an empty state. A Playwright screenshot `docs/screenshots/scatter.png` at 1280×800 shows axes and a cloud, not a blank panel.
 - Verify: `pnpm build && pnpm e2e`. Inspect the screenshot.
 
 ### M3.2 Zoom and brush
 
-- [ ] Wheel zooms, Shift+drag pans, double-click resets, drag brushes in data coordinates (ADR-011). The brush calls `setBrush` for the x and y columns. Axes and points share the zoom transform.
+- [x] Wheel zooms, Shift+drag pans, double-click resets, drag brushes in data coordinates (ADR-011). The brush calls `setBrush` for the x and y columns. Axes and points share the zoom transform.
 - Acceptance: brushing a corner of the scatter changes `filter-count`. Reset restores `10000 of 10000 designs`. A unit or component test is unnecessary if Playwright covers the count change; also assert the number inputs update to the brushed domain within a small tolerance.
 - Verify: `pnpm e2e` with a new spec that brushes and resets.
 
 ### M3.3 Hover
 
-- [ ] Quadtree over in-filter points, rebuilt when the mask or the zoom domain changes. When the filtered count is ≤ 4000, build `d3-delaunay` and use it for nearest hover. Hover updates a highlight canvas only. Moving the pointer does not change React state in `App` (subscribe outside render).
+- [x] Quadtree over in-filter points, rebuilt when the mask or the zoom domain changes. When the filtered count is ≤ 4000, build `d3-delaunay` and use it for nearest hover. Hover updates a highlight canvas only. Moving the pointer does not change React state in `App` (subscribe outside render).
 - Acceptance: hovering a point does not reset the filter count. `pnpm test` still passes. Hit-test of a known point in a Vitest quadtree fixture returns that index.
 - Verify: `pnpm test && pnpm e2e`.
 
@@ -252,19 +252,19 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M4.1 Lines and axes
 
-- [ ] `src/charts/ParallelCoordinates.tsx`. Canvas polylines for context and for the filter. SVG axis per active column. Default order from ADR-004. Faint context, stronger in-filter lines.
+- [x] `src/charts/ParallelCoordinates.tsx`. Canvas polylines for context and for the filter. SVG axis per active column. Default order from ADR-004. Faint context, stronger in-filter lines.
 - Acceptance: screenshot `docs/screenshots/overview.png` shows the coordinates above the scatter. With no brush, lines span the axes.
 - Verify: screenshot spec, then look at the file.
 
 ### M4.2 Axis brush
 
-- [ ] `d3-brush` on each axis, one range, stored via `setBrush`. Brushing angle of attack moves the scatter and the filter count together.
+- [x] `d3-brush` on each axis, one range, stored via `setBrush`. Brushing angle of attack moves the scatter and the filter count together.
 - Acceptance: Playwright brushes the axis (or, if the SVG brush is brittle, uses the number input and asserts the axis brush overlay moves). The scatter screenshot changes versus the unbrushed frame.
 - Verify: `pnpm e2e`. Keep `docs/screenshots/brushed.png`.
 
 ### M4.3 Reorder and invert
 
-- [ ] Dragging an axis title reorders `axes` in the store and animates x positions over 300ms unless reduced motion is set. An invert control flips that scale's domain and is reflected in the URL.
+- [x] Dragging an axis title reorders `axes` in the store and animates x positions over 300ms unless reduced motion is set. An invert control flips that scale's domain and is reflected in the URL.
 - Acceptance: after a reorder, the URL hash changes and a reload keeps the new order. Vitest can encode order in the URL helper; Playwright checks one invert by reading the axis endpoint labels.
 - Verify: `pnpm test && pnpm e2e`.
 
@@ -274,19 +274,19 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M5.1 Matrix
 
-- [ ] `src/charts/Splom.tsx`. One canvas. Default columns from ADR-003. Upper triangle is scatter cells; diagonal is 40-bin histograms of that column. Axes only on the outer left and bottom. Out-of-filter points faint.
+- [x] `src/charts/Splom.tsx`. One canvas. Default columns from ADR-003. Upper triangle is scatter cells; diagonal is 40-bin histograms of that column. Axes only on the outer left and bottom. Out-of-filter points faint.
 - Acceptance: screenshot `docs/screenshots/splom.png` shows a triangle, not a full square of ten variables. The column toggle can add `camber` and the matrix grows by one.
 - Verify: `pnpm e2e` and the screenshot.
 
 ### M5.2 Cell brush
 
-- [ ] An axis-aligned brush on an off-diagonal cell sets the two column ranges. A brush on the diagonal histogram sets that one column. Both go through the same store as the parallel coordinates.
+- [x] An axis-aligned brush on an off-diagonal cell sets the two column ranges. A brush on the diagonal histogram sets that one column. Both go through the same store as the parallel coordinates.
 - Acceptance: brushing the `cl`/`cd` cell changes `filter-count` and the parallel-coordinate highlight. Clearing via Reset empties it.
 - Verify: `pnpm e2e`.
 
 ### M5.3 Budget
 
-- [ ] Playwright times a full SPLOM redraw triggered by `brush-thickness-min/max`. Fail the test above 50 ms. If it fails, drop the default to four columns and record that in `docs/DECISIONS.md` as an amendment to ADR-003. Do not start with a worker.
+- [x] Playwright times a full SPLOM redraw triggered by `brush-thickness-min/max`. Fail the test above 50 ms. If it fails, drop the default to four columns and record that in `docs/DECISIONS.md` as an amendment to ADR-003. Do not start with a worker.
 - Acceptance: the perf spec passes on the production preview.
 - Verify: `pnpm build && pnpm e2e`.
 
@@ -302,7 +302,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M6.2 View
 
-- [ ] `src/charts/Pareto.tsx` draws ghosts for infeasible rows, dim dominated rows, and an SVG polyline for the front. Controls pick the two columns and the direction. Drag brushes like the scatter (ADR-011). Extract a shared helper from `Scatter.tsx` only for the duplicated zoom/brush math.
+- [x] `src/charts/Pareto.tsx` draws ghosts for infeasible rows, dim dominated rows, and an SVG polyline for the front. Controls pick the two columns and the direction. Drag brushes like the scatter (ADR-011). Extract a shared helper from `Scatter.tsx` only for the duplicated zoom/brush math.
 - Acceptance: screenshot `docs/screenshots/pareto.png` shows a front that steps up and to the right for the default (cd horizontal, cl vertical) — low cd at the left, high cl at the top. Switching `cl` from maximize to minimize changes which points sit on the line.
 - Verify: `pnpm e2e` and the screenshot.
 
@@ -312,7 +312,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M7.1 Histogram
 
-- [ ] `src/charts/Histogram.tsx` for `hist` (default `thickness`). SVG, 40 bins. Background is all rows; foreground is the mask. Brush sets that column's range.
+- [x] `src/charts/Histogram.tsx` for `hist` (default `thickness`). SVG, 40 bins. Background is all rows; foreground is the mask. Brush sets that column's range.
 - Acceptance: with an angle-of-attack brush active, the thickness histogram's foreground is a subset of the background (foreground bar heights ≤ background). Playwright reads bar heights via element attributes or `data-bin-count`.
 - Verify: `pnpm e2e`.
 
@@ -324,7 +324,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M7.3 Details and linking
 
-- [ ] `src/components/DetailsPanel.tsx` lists every column with units for `selectedId`. Clicking a scatter point, a parallel-coordinate line hit, or a Pareto point sets `selectedId`. Hover highlights that row on every canvas without pinning. The nearest-NACA label is marked as nearest (ADR-002).
+- [x] `src/components/DetailsPanel.tsx` lists every column with units for `selectedId`. Clicking a scatter point, a parallel-coordinate line hit, or a Pareto point sets `selectedId`. Hover highlights that row on every canvas without pinning. The nearest-NACA label is marked as nearest (ADR-002).
 - Acceptance: Playwright clicks the scatter, expects `data-testid="details"` to contain the id and a camber value, and expects the shape preview. The wind-tunnel link is absent because `VITE_WIND_TUNNEL_URL` is unset.
 - Verify: `pnpm e2e`. Keep `docs/screenshots/details.png`.
 
@@ -334,25 +334,25 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M8.1 Keyboard and motion
 
-- [ ] ADR-005 keyboard map. `prefers-reduced-motion` skips the axis-reorder transition (Playwright can emulate the media feature and assert the axis x is final on the next frame).
+- [x] ADR-005 keyboard map. `prefers-reduced-motion` skips the axis-reorder transition (Playwright can emulate the media feature and assert the axis x is final on the next frame).
 - Acceptance: ArrowRight changes `selectedId` along the filtered order. Escape clears it. `r` restores the full count when focus is not in an input.
 - Verify: `pnpm e2e`.
 
 ### M8.2 Accessible names
 
-- [ ] Live region text matches `{matchCount} of {n} designs`. Each canvas has `role="img"` and an `aria-label` that includes the view name and the filter count. Toolbar controls have visible labels.
+- [x] Live region text matches `{matchCount} of {n} designs`. Each canvas has `role="img"` and an `aria-label` that includes the view name and the filter count. Toolbar controls have visible labels.
 - Acceptance: Playwright checks the live region and one canvas label before and after a brush.
 - Verify: `pnpm e2e`.
 
 ### M8.3 Paint budgets
 
-- [ ] Specs for ADR-006: first paint < 1.5 s after the data response, parallel-coordinate redraw < 16 ms, scatter redraw < 16 ms, hover hit-test < 2 ms. Use `performance.now` inside `page.evaluate` around a store action exposed for tests as `window.__explorer` in preview builds only, or around the number-input path if that is the same code. Do not leave a debug global in a way that changes production behavior beyond a thin test hook guarded by `import.meta.env.DEV` or a `?e2e=1` flag. Prefer driving the real inputs if the timer still wraps the chart redraw.
+- [x] Specs for ADR-006: first paint < 1.5 s after the data response, parallel-coordinate redraw < 16 ms, scatter redraw < 16 ms, hover hit-test < 2 ms. Use `performance.now` inside `page.evaluate` around a store action exposed for tests as `window.__explorer` in preview builds only, or around the number-input path if that is the same code. Do not leave a debug global in a way that changes production behavior beyond a thin test hook guarded by `import.meta.env.DEV` or a `?e2e=1` flag. Prefer driving the real inputs if the timer still wraps the chart redraw.
 - Acceptance: the spec fails when the threshold is exceeded. Thresholds match ADR-006, not a looser local number.
 - Verify: `pnpm build && pnpm e2e`.
 
 ### M8.4 Worker escape hatch
 
-- [ ] If M8.3 is green, tick this task with a PROGRESS note "not needed" and do not add a worker.
+- [x] If M8.3 is green, tick this task with a PROGRESS note "not needed" and do not add a worker.
 - [ ] If a budget failed, move that view's rasterization to an `OffscreenCanvas` worker, re-measure, and amend ADR-006 with what moved. Do not move the filter mask unless the mask test itself failed.
 - Acceptance: M8.3 is green afterward, or the remaining miss is written in `docs/QUESTIONS.md` with the measured number and v1 still ships only if the miss is under 2× the budget. A miss at or above 2× is a blocker for M9, not a silent tick.
 - Verify: `pnpm e2e`.
@@ -363,19 +363,19 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M9.1 Screenshots and recording
 
-- [ ] Commit the screenshots named above. Add a Playwright video of a brush propagating across views, saved as `docs/media/brush.webm`. If `ffmpeg` is on PATH, also write `docs/media/brush.gif`. If it is not, record that in `docs/QUESTIONS.md` and use the webm in the README.
+- [x] Commit the screenshots named above. Add a Playwright video of a brush propagating across views, saved as `docs/media/brush.webm`. If `ffmpeg` is on PATH, also write `docs/media/brush.gif`. If it is not, record that in `docs/QUESTIONS.md` and use the webm in the README.
 - Acceptance: the files exist and the webm is longer than a single frame.
 - Verify: the spec that records the video.
 
 ### M9.2 README
 
-- [ ] Rewrite `README.md`: what it is, the honesty paragraph, GIF or webm, the screenshots, the mermaid architecture diagram, notes on canvas vs SVG and the quadtree/Delaunay split, performance budgets and how to re-measure, local commands (`pnpm` and `uv`), CI badge, MIT, link to `docs/PLAN.md`.
+- [x] Rewrite `README.md`: what it is, the honesty paragraph, GIF or webm, the screenshots, the mermaid architecture diagram, notes on canvas vs SVG and the quadtree/Delaunay split, performance budgets and how to re-measure, local commands (`pnpm` and `uv`), CI badge, MIT, link to `docs/PLAN.md`.
 - Acceptance: a cold reader can run the app and regenerate the data without opening the plan. The word XFOIL appears only to say we do not use it.
 - Verify: read the README against this list.
 
 ### M9.3 Tag
 
-- [ ] `CHANGELOG.md` summarizes M0–M9. `docs/QUESTIONS.md` is current. Tag `v1.0.0` on the commit that contains the README. Push the tag.
+- [x] `CHANGELOG.md` summarizes M0–M9. `docs/QUESTIONS.md` is current. Tag `v1.0.0` on the commit that contains the README. Push the tag.
 - Acceptance: `git status` is clean, CI on the tagged commit is green, `gh release view v1.0.0` works if a release was created. A git tag is enough if `gh release create` needs extra confirmation; prefer `gh release create v1.0.0 --notes-from-tag` or a short note from the changelog. Do not force-push the tag.
 - Verify: `gh run list` and `git ls-remote --tags origin v1.0.0`.
 
@@ -385,7 +385,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M10.1 README note only
 
-- [ ] Add a short "Deploy" section: the app is a static `dist/` and the target is not chosen. Do not create a Cloudflare, GitHub Pages, or Hetzner config. Do not buy a domain.
+- [x] Add a short "Deploy" section: the app is a static `dist/` and the target is not chosen. Do not create a Cloudflare, GitHub Pages, or Hetzner config. Do not buy a domain.
 - Acceptance: the section exists and no workflow deploys the site.
 - Verify: `rg -n "pages-deploy|wrangler deploy" .github || true` returns nothing.
 

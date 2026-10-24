@@ -1,3 +1,9 @@
+export type DrawTimings = {
+  pcp?: number
+  scatter?: number
+  splom?: number
+}
+
 export type ExplorerTestApi = {
   setBrush: (column: string, range: [number, number] | null) => void
   hitTestScatter: (x: number, y: number) => number | null
@@ -6,7 +12,13 @@ export type ExplorerTestApi = {
 declare global {
   interface Window {
     __explorer?: ExplorerTestApi
+    __timings?: DrawTimings
   }
+}
+
+export function recordDraw(name: keyof DrawTimings, started: number) {
+  const timings = (window.__timings ??= {})
+  timings[name] = performance.now() - started
 }
 
 export function e2eEnabled() {

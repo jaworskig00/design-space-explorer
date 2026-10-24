@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-24 — M9 release, deploy left open
+
+- What: Screenshots, brush gif/webm, keyboard and accessible-name specs, ADR-006 timings, scatter drag brush, Pareto direction and click, parallel-coordinate hit testing. README and changelog cover M0–M9. Brush overlays were ignoring pointer events because `.chart .overlay` also matched the D3 brush rect; the rule is now `canvas.overlay` only. M8.4 worker: not needed. No host, no deploy workflow.
+- Verified: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` (JS gzip about 114 KB), `pnpm e2e` on the production preview. Perf spec passed under 16 ms / 50 ms / 2 ms / 1.5 s.
+- Follow-ups: choose a static host. Do not tag until CI on this commit is green.
+
 ## 2026-10-24 — M1 dataset and linked views
 
 - What: Generated 10,000 synthetic NACA rows and wired parallel coordinates, scatter, SPLOM, Pareto, histograms, details, and the shape outline. Brushing angle of attack filters every view and survives reload.

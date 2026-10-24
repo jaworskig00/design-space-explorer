@@ -7,7 +7,7 @@ import { useLayoutEffect, useRef } from 'react'
 import { axisBottom, axisLeft } from 'd3-axis'
 import { getTable, type ColumnName } from '../data/columns.ts'
 import { binColors, colorBin } from '../lib/colorScale.ts'
-import { publishE2E } from '../e2eApi.ts'
+import { publishE2E, recordDraw } from '../e2eApi.ts'
 import { useExplorer } from '../state/explorerStore.ts'
 import { MARGIN, plotSize, resizeCanvas } from './geometry.ts'
 import { columnScale } from './scales.ts'
@@ -46,6 +46,7 @@ export function ScatterPlot() {
     let findPoint: (x: number, y: number) => number | null = () => null
 
     const draw = () => {
+      const started = performance.now()
       const state = useExplorer.getState()
       const x = columnScale(
         table,
@@ -111,6 +112,7 @@ export function ScatterPlot() {
         'aria-label',
         `Focused scatter, ${state.matchCount} of ${table.n} designs`,
       )
+      recordDraw('scatter', started)
       const hi = highlight.getContext('2d')
       const hdpr = resizeCanvas(highlight, size.width, size.height)
       if (!hi) return
@@ -176,8 +178,6 @@ export function ScatterPlot() {
           )
         },
       )
-    brushG.call(xyBrush)
-
     const zoomer = zoom<SVGSVGElement, unknown>()
       .filter((event: Event) => {
         const mouse = event as MouseEvent
@@ -190,6 +190,8 @@ export function ScatterPlot() {
         draw()
       })
     svg.call(zoomer)
+    brushG.call(xyBrush)
+    brushG.raise()
     svg.on('dblclick', (event: MouseEvent) => {
       event.preventDefault()
       svg.call(zoomer.transform, zoomIdentity)

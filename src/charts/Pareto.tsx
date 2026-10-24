@@ -1,4 +1,5 @@
 import { axisBottom, axisLeft } from 'd3-axis'
+import { brush } from 'd3-brush'
 import { line } from 'd3-shape'
 import { select } from 'd3-selection'
 import { useLayoutEffect, useRef } from 'react'
@@ -105,7 +106,72 @@ export function ParetoPlot() {
         'aria-label',
         `Pareto front, ${state.matchCount} of ${table.n} designs`,
       )
+      const plotBrush = brush().extent([
+        [MARGIN.left, MARGIN.top],
+        [MARGIN.left + innerWidth, MARGIN.top + innerHeight],
+      ])
+      plotBrush.on(
+        'end',
+        (event: {
+          selection: [[number, number], [number, number]] | null
+          sourceEvent: Event | null
+        }) => {
+          if (!event.sourceEvent) return
+          const current = useExplorer.getState()
+          if (!event.selection) {
+            current.setBrush(current.paretoX, null, 'pointer')
+            current.setBrush(current.paretoY, null, 'pointer')
+            return
+          }
+          const [[x0, y0], [x1, y1]] = event.selection
+          current.setBrush(
+            current.paretoX,
+            [x.invert(x0), x.invert(x1)],
+            'pointer',
+          )
+          current.setBrush(
+            current.paretoY,
+            [y.invert(y0), y.invert(y1)],
+            'pointer',
+          )
+        },
+      )
+      svg.append('g').attr('class', 'pareto-brush').call(plotBrush)
     }
+    const onClick = (event: MouseEvent) => {
+      const state = useExplorer.getState()
+      const x = columnScale(
+        table,
+        state.paretoX,
+        [MARGIN.left, MARGIN.left + innerWidth],
+        state.paretoXDir === 'max',
+      )
+      const y = columnScale(
+        table,
+        state.paretoY,
+        [MARGIN.top + innerHeight, MARGIN.top],
+        state.paretoYDir === 'min',
+      )
+      const node = svgElement.getBoundingClientRect()
+      const px = event.clientX - node.left
+      const py = event.clientY - node.top
+      let best = -1
+      let bestDistance = 14 * 14
+      const xs = table.columns[state.paretoX]
+      const ys = table.columns[state.paretoY]
+      for (let i = 0; i < table.n; i += 1) {
+        if (!state.mask[i]) continue
+        const dx = (x(xs[i] ?? 0) ?? 0) - px
+        const dy = (y(ys[i] ?? 0) ?? 0) - py
+        const distance = dx * dx + dy * dy
+        if (distance < bestDistance) {
+          bestDistance = distance
+          best = i
+        }
+      }
+      if (best >= 0) state.setSelected(best)
+    }
+    svgElement.addEventListener('click', onClick)
     draw()
     const unsubscribe = useExplorer.subscribe((state, previous) => {
       if (
@@ -118,7 +184,10 @@ export function ParetoPlot() {
         draw()
       }
     })
-    return () => unsubscribe()
+    return () => {
+      unsubscribe()
+      svgElement.removeEventListener('click', onClick)
+    }
   }, [ready, size.width, size.height, paretoX, paretoY, paretoXDir, paretoYDir])
 
   return (

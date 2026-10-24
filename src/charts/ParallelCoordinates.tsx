@@ -5,6 +5,7 @@ import { useLayoutEffect, useRef } from 'react'
 import { getTable, type ColumnName } from '../data/columns.ts'
 import { binColors, colorBin } from '../lib/colorScale.ts'
 import { easeInOut, motionEnabled } from '../lib/motion.ts'
+import { recordDraw } from '../e2eApi.ts'
 import { useExplorer } from '../state/explorerStore.ts'
 import { columnScale } from './scales.ts'
 import { useSize } from './useSize.ts'
@@ -31,9 +32,11 @@ export function ParallelCoordinates() {
     const svg = select(svgElement)
     let frame = 0
     const target = axisOrder.map((_, index) => {
-      const step =
-        axisOrder.length === 1 ? 0 : (size.width - 48) / (axisOrder.length - 1)
-      return 28 + index * step
+      const left = 40
+      const right = 88
+      const span = Math.max(0, size.width - left - right)
+      const step = axisOrder.length === 1 ? 0 : span / (axisOrder.length - 1)
+      return left + index * step
     })
     const from =
       positions.current.length === target.length
@@ -43,6 +46,7 @@ export function ParallelCoordinates() {
     const duration = motionEnabled() ? 300 : 0
 
     const drawAt = (xs: number[]) => {
+      const started = performance.now()
       positions.current = xs
       const state = useExplorer.getState()
       const scales = new Map<ColumnName, ReturnType<typeof columnScale>>()
@@ -68,31 +72,33 @@ export function ParallelCoordinates() {
       ctx.clearRect(0, 0, size.width, size.height)
       const colorValues = table.columns[state.colorColumn]
       const colorDomain = table.meta[state.colorColumn].domain
-      for (const on of [false, true]) {
-        for (let bin = 0; bin < colors.length; bin += 1) {
-          ctx.beginPath()
-          let any = false
-          for (let i = 0; i < table.n; i += 1) {
-            if ((state.mask[i] === 1) !== on) continue
-            const value = colorValues[i] ?? 0
-            if (on && colorBin(value, colorDomain) !== bin) continue
-            if (!on && bin !== 0) continue
-            axisOrder.forEach((column, index) => {
-              const scale = scales.get(column)
-              const y = scale?.(table.columns[column][i] ?? 0) ?? 0
-              const x = xs[index] ?? 0
-              if (index === 0) ctx.moveTo(x, y)
-              else ctx.lineTo(x, y)
-            })
-            any = true
-          }
-          if (!any) continue
-          ctx.globalAlpha = on ? 0.18 : 0.04
-          ctx.strokeStyle = on ? `rgb(${colors[bin]?.join(',')})` : '#93a0b5'
-          ctx.lineWidth = 1
-          ctx.stroke()
-        }
+      const focused = colors.map(() => new Path2D())
+      const context = new Path2D()
+      for (let i = 0; i < table.n; i += 1) {
+        const path =
+          state.mask[i] === 1
+            ? focused[colorBin(colorValues[i] ?? 0, colorDomain)]
+            : context
+        if (!path) continue
+        axisOrder.forEach((column, index) => {
+          const scale = scales.get(column)
+          const y = scale?.(table.columns[column][i] ?? 0) ?? 0
+          const x = xs[index] ?? 0
+          if (index === 0) path.moveTo(x, y)
+          else path.lineTo(x, y)
+        })
       }
+      ctx.globalAlpha = 0.04
+      ctx.strokeStyle = '#93a0b5'
+      ctx.lineWidth = 1
+      ctx.stroke(context)
+      ctx.globalAlpha = 0.18
+      focused.forEach((path, bin) => {
+        const rgb = colors[bin]
+        if (!rgb) return
+        ctx.strokeStyle = `rgb(${rgb.join(',')})`
+        ctx.stroke(path)
+      })
       ctx.globalAlpha = 1
       canvas.setAttribute(
         'aria-label',
@@ -205,8 +211,10 @@ export function ParallelCoordinates() {
           )
         }
       })
+      recordDraw('pcp', started)
     }
 
+    svgElement.dataset.motion = duration === 0 ? 'off' : 'on'
     const step = (now: number) => {
       const t = duration === 0 ? 1 : Math.min(1, (now - started) / duration)
       const eased = easeInOut(t)
@@ -218,6 +226,59 @@ export function ParallelCoordinates() {
       if (t < 1) frame = requestAnimationFrame(step)
     }
     frame = requestAnimationFrame(step)
+    const onClick = (event: MouseEvent) => {
+      const hit = event.target
+      if (hit instanceof Element && hit.closest('text')) return
+      const rect = svgElement.getBoundingClientRect()
+      const px = event.clientX - rect.left
+      const py = event.clientY - rect.top
+      const state = useExplorer.getState()
+      const xs = positions.current.length ? positions.current : target
+      const scales = axisOrder.map((column) =>
+        columnScale(
+          table,
+          column,
+          [28, size.height - 16],
+          state.inverted.includes(column),
+        ),
+      )
+      let best = -1
+      let bestDistance = 8 * 8
+      for (let i = 0; i < table.n; i += 1) {
+        if (!state.mask[i]) continue
+        let previousX = 0
+        let previousY = 0
+        for (let axis = 0; axis < axisOrder.length; axis += 1) {
+          const column = axisOrder[axis]
+          const scale = scales[axis]
+          if (!column || !scale) continue
+          const x = xs[axis] ?? 0
+          const y = scale(table.columns[column][i] ?? 0) ?? 0
+          if (axis > 0) {
+            const dx = x - previousX
+            const dy = y - previousY
+            const length2 = dx * dx + dy * dy || 1
+            const t = Math.max(
+              0,
+              Math.min(
+                1,
+                ((px - previousX) * dx + (py - previousY) * dy) / length2,
+              ),
+            )
+            const distance =
+              (previousX + t * dx - px) ** 2 + (previousY + t * dy - py) ** 2
+            if (distance < bestDistance) {
+              bestDistance = distance
+              best = i
+            }
+          }
+          previousX = x
+          previousY = y
+        }
+      }
+      if (best >= 0) state.setSelected(best)
+    }
+    svgElement.addEventListener('click', onClick)
     const unsubscribe = useExplorer.subscribe((state, previous) => {
       if (state.axisOrder !== previous.axisOrder) return
       if (
@@ -234,6 +295,7 @@ export function ParallelCoordinates() {
     return () => {
       cancelAnimationFrame(frame)
       unsubscribe()
+      svgElement.removeEventListener('click', onClick)
       svg.selectAll('*').remove()
     }
   }, [ready, size.width, size.height, axisOrder, inverted])
