@@ -1,0 +1,14 @@
+---
+description: Build the Design Space Explorer from docs/PLAN.md, one task at a time.
+alwaysApply: true
+---
+
+# Design Space Explorer
+
+Follow `AGENTS.md` and `docs/PLAN.md`. Do not rediscover the product from scratch.
+
+- Work on `main`. One PLAN.md task at a time. After it passes, commit, push, tick the checkbox, and append `docs/PROGRESS.md`.
+- If a push leaves CI red, the next task is the fix.
+- Do not add ML, an LLM, paid APIs, Tailwind, or a deployment. Do not import the monolithic `d3` package.
+- The airfoil coefficients are a documented synthetic surrogate. Do not describe them as XFOIL or CFD output.
+- Keep `pnpm install && pnpm dev` working after M0. Do not commit `.env`, secrets, or `node_modules`.
