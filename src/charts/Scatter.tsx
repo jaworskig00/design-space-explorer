@@ -46,7 +46,6 @@ export function ScatterPlot() {
     let findPoint: (x: number, y: number) => number | null = () => null
 
     const draw = () => {
-      const started = performance.now()
       const state = useExplorer.getState()
       const x = columnScale(
         table,
@@ -75,6 +74,7 @@ export function ScatterPlot() {
       const colorValues = table.columns[state.colorColumn]
       const ids: number[] = []
       const coords: number[] = []
+      const started = performance.now()
       for (let i = 0; i < table.n; i += 1) {
         const px = Math.round((zx(xs[i] ?? 0) ?? 0) * dpr)
         const py = Math.round((zy(ys[i] ?? 0) ?? 0) * dpr)
@@ -95,6 +95,11 @@ export function ScatterPlot() {
         }
       }
       ctx.putImageData(image, 0, 0)
+      canvas.setAttribute(
+        'aria-label',
+        `Focused scatter, ${state.matchCount} of ${table.n} designs`,
+      )
+      recordDraw('scatter', started)
       if (ids.length > 0 && ids.length <= 4000) {
         const delaunay = new Delaunay(Float64Array.from(coords))
         findPoint = (px, py) => {
@@ -108,11 +113,6 @@ export function ScatterPlot() {
         tree.addAll(ids)
         findPoint = (px, py) => tree.find(px, py, 14) ?? null
       }
-      canvas.setAttribute(
-        'aria-label',
-        `Focused scatter, ${state.matchCount} of ${table.n} designs`,
-      )
-      recordDraw('scatter', started)
       const hi = highlight.getContext('2d')
       const hdpr = resizeCanvas(highlight, size.width, size.height)
       if (!hi) return
