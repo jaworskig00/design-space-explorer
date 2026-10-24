@@ -156,7 +156,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M0.6 CI
 
-- [ ] `.github/workflows/ci.yml` on push and pull_request: checkout, pnpm, Node 22, frozen lockfile, lint, typecheck, test, build, size check, Playwright with a cached Chromium. Add the status badge to `README.md`.
+- [x] `.github/workflows/ci.yml` on push and pull_request: checkout, pnpm, Node 22, frozen lockfile, lint, typecheck, test, build, size check, Playwright with a cached Chromium. Add the status badge to `README.md`.
 - Acceptance: the workflow file is valid and the badge URL targets `ci.yml`. No Python job yet (ADR-008).
 - Verify: push, then `gh run watch` or `gh run list` until the run completes green. If it fails, fix before M1.
 

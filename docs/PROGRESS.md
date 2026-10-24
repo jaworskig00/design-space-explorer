@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-24 — M0.6 CI
+
+- What: GitHub Actions runs lint, typecheck, unit tests, build, the gzip budget, and Playwright Chromium. README badge points at `ci.yml`. No Python job yet.
+- Verified: workflow file added; run status checked after the push.
+- Follow-ups: confirm the run is green before M1.
+
 ## 2026-10-24 — M0.1 tooling skeleton
 
 - What: Vite, React 19, TypeScript strict, ESLint, Prettier, Vitest. Page title is Design Space Explorer.
