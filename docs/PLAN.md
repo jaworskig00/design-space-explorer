@@ -97,6 +97,7 @@ One line each. Rationale is in the ADRs.
 - Canvas and React Strict Mode double-mount. Every chart effect must cancel animation frames and `brush.on('.')` / `zoom.on('.')` on cleanup.
 - Putting the table or the hover id into React state will drop frames. ADR-004 forbids it.
 - Drag-to-pan and drag-to-brush cannot share the same gesture. ADR-011 is the rule.
+- `neural-wind-tunnel` already defines a different dataset and deep-link contract. v1 follows ADR-002 and ADR-009 anyway. Do not import that repo's stub CSV unless a new ADR says so. The open note is in `docs/QUESTIONS.md`.
 
 ## Definition of done for v1
 

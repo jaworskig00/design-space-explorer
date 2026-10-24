@@ -221,7 +221,9 @@ Pre-commit is husky + lint-staged: Prettier and ESLint on staged files only. The
 
 **Status:** accepted
 
-This repo does not depend on the Neural Wind Tunnel. `data/SCHEMA.md` is the contract a later app can import. The details panel renders "Open in wind tunnel" only when `VITE_WIND_TUNNEL_URL` is set, as a link to `{url}?id={selectedId}`. Unset means the control is absent, not disabled and not a dead link.
+This repo does not depend on the Neural Wind Tunnel. `data/SCHEMA.md` is the contract for this app's own synthetic sample. The details panel does not render a wind-tunnel link in v1.
+
+`neural-wind-tunnel` (public, 2026-10-24) publishes a different contract: CST weights and a hash of the form `#v=1&au=…&al=…&a=…` (`docs/DATASET-SCHEMA.md`, `docs/URL-STATE.md` in that repo). A `?id=` link would not open a design there. Turning the link on requires a base URL and a mapping from our rows onto that hash, which NACA samples do not have. Until an ADR replaces ADR-002, do not consume the wind-tunnel dataset and do not add the button.
 
 ## ADR-010 — No ML in v1
 

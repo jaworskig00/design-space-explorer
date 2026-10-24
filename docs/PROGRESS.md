@@ -7,3 +7,9 @@ Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 - What: Added the v1 plan, decisions, agent rules, and repo skeleton. No application code.
 - Verified: Documents reviewed against the approved plan. GitHub auth for `jaworskig00` was valid; the remote did not exist yet.
 - Follow-ups: Autonomous implementation starts at M0 in `docs/PLAN.md`.
+
+## 2026-10-24 — sister-repo note
+
+- What: Recorded that `neural-wind-tunnel` already exists and uses a CST / panel-solver schema and a different URL hash. v1 of this repo stays on ADR-002.
+- Verified: Read `neural-wind-tunnel/docs/DATASET-SCHEMA.md` and `docs/URL-STATE.md`.
+- Follow-ups: None for M0. Do not switch datasets without a new ADR.
