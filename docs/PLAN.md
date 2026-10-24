@@ -132,7 +132,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M0.2 App shell
 
-- [ ] Replace the Vite starter with the dashboard regions (toolbar, five view slots, details slot) and the color tokens from ADR-001. Load IBM Plex from `fontsource`. No chart logic yet.
+- [x] Replace the Vite starter with the dashboard regions (toolbar, five view slots, details slot) and the color tokens from ADR-001. Load IBM Plex from `fontsource`. No chart logic yet.
 - Acceptance: regions are visible and labeled, including empty states. Keyboard focus rings exist on the toolbar controls.
 - Verify: `pnpm dev` and a quick look; unit test is unchanged and still green.
 

@@ -1,0 +1,16 @@
+:root {
+  --bg: #0e1116;
+  --panel: #161b22;
+  --border: #2a3340;
+  --text: #e7ecf3;
+  --muted: #93a0b5;
+  --accent: #3ddc97;
+  --selection: #e8a838;
+  --front: #f4f7fb;
+  --shadow: 0 10px 30px rgb(0 0 0 / 25%);
+  color-scheme: dark;
+  font-family: 'IBM Plex Sans', sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.4;
+}
