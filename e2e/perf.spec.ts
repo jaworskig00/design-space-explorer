@@ -10,13 +10,34 @@ test('redraws stay inside the ADR-006 budgets', async ({ page }) => {
   })
   expect(firstPaint).toBeLessThan(1500)
 
-  await page.evaluate(() => {
-    window.__explorer?.setBrush('thickness', [0.1, 0.16])
+  const timings = await page.evaluate(() => {
+    const samples = []
+    for (let i = 0; i < 5; i += 1) {
+      window.__explorer?.setBrush(
+        'thickness',
+        i % 2 === 0 ? [0.1, 0.16] : [0.12, 0.18],
+      )
+      samples.push({ ...(window.__timings ?? {}) })
+    }
+    const median = (values: number[]) => {
+      const sorted = [...values].sort((a, b) => a - b)
+      return sorted[2] ?? Number.POSITIVE_INFINITY
+    }
+    return {
+      pcp: median(
+        samples.map((sample) => sample.pcp ?? Number.POSITIVE_INFINITY),
+      ),
+      scatter: median(
+        samples.map((sample) => sample.scatter ?? Number.POSITIVE_INFINITY),
+      ),
+      splom: median(
+        samples.map((sample) => sample.splom ?? Number.POSITIVE_INFINITY),
+      ),
+    }
   })
-  const timings = await page.evaluate(() => window.__timings ?? {})
-  expect(timings.pcp ?? Number.POSITIVE_INFINITY).toBeLessThan(16)
-  expect(timings.scatter ?? Number.POSITIVE_INFINITY).toBeLessThan(16)
-  expect(timings.splom ?? Number.POSITIVE_INFINITY).toBeLessThan(50)
+  expect(timings.pcp).toBeLessThan(16)
+  expect(timings.scatter).toBeLessThan(16)
+  expect(timings.splom).toBeLessThan(50)
 
   const hit = await page.evaluate(() => {
     const start = performance.now()

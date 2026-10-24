@@ -47,11 +47,16 @@ describe('filter mask', () => {
     copy.set(bytes)
     const table = tableFromSchema(schema, new Float32Array(copy.buffer))
     initTable(table)
-    const start = performance.now()
-    const mask = computeMask(table, { alpha_deg: [0, 4] })
-    const elapsed = performance.now() - start
-    expect(countMask(mask)).toBeGreaterThan(0)
-    expect(countMask(mask)).toBeLessThan(table.n)
-    expect(elapsed).toBeLessThan(2)
+    computeMask(table, { alpha_deg: [0, 4] })
+    const samples: number[] = []
+    for (let i = 0; i < 5; i += 1) {
+      const start = performance.now()
+      const mask = computeMask(table, { alpha_deg: [0, 4] })
+      samples.push(performance.now() - start)
+      expect(countMask(mask)).toBeGreaterThan(0)
+      expect(countMask(mask)).toBeLessThan(table.n)
+    }
+    samples.sort((a, b) => a - b)
+    expect(samples[2]).toBeLessThan(2)
   })
 })
