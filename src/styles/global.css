@@ -1,0 +1,14 @@
+:root {
+  color: #e7ecf3;
+  background: #0e1116;
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+  margin: 0;
+}
+
+h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}

@@ -126,7 +126,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M0.1 Tooling skeleton
 
-- [ ] Create the Vite React-TypeScript app in this repo without discarding the planning docs. Add `.nvmrc` (already `22`), `packageManager` in `package.json`, strict `tsconfig`, ESLint, Prettier, and scripts `dev`, `lint`, `typecheck`, `test`, `build`, `preview`.
+- [x] Create the Vite React-TypeScript app in this repo without discarding the planning docs. Add `.nvmrc` (already `22`), `packageManager` in `package.json`, strict `tsconfig`, ESLint, Prettier, and scripts `dev`, `lint`, `typecheck`, `test`, `build`, `preview`.
 - Acceptance: `pnpm install && pnpm dev` serves a page titled "Design Space Explorer". `pnpm lint`, `pnpm typecheck`, and `pnpm test` exit 0. The test can be a single passing placeholder.
 - Verify: those four commands.
 

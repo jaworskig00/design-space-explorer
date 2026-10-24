@@ -16,3 +16,7 @@ blob-report/
 .DS_Store
 *.log
 .cursor/projects/
+tmp/
+dist-ssr/
+*.local
+.husky/_

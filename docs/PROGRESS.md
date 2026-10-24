@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-24 — M0.1 tooling skeleton
+
+- What: Vite, React 19, TypeScript strict, ESLint, Prettier, Vitest. Page title is Design Space Explorer.
+- Verified: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`.
+- Follow-ups: M0.2 replaces the placeholder with the dashboard shell.
+
 ## 2026-10-24 — planning docs
 
 - What: Added the v1 plan, decisions, agent rules, and repo skeleton. No application code.

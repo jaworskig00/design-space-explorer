@@ -1,0 +1,9 @@
+dist
+node_modules
+coverage
+pnpm-lock.yaml
+public/data
+playwright-report
+test-results
+tmp
+data/.venv
