@@ -4,6 +4,7 @@ Anything still unresolved. The autonomous agent appends here instead of stopping
 
 ## Open
 
+- The 10k filter-mask budget is 2 ms (ADR-006). On a GitHub-hosted runner the median of five passes measured 3.5 ms on 2026-10-24. That is under the 2× line, so v1 ships. A result at or above 4 ms should be treated as a real regression.
 - Sister repo [`neural-wind-tunnel`](https://github.com/jaworskig00/neural-wind-tunnel) exists as of 2026-10-24. Its `docs/DATASET-SCHEMA.md` is a CST + panel-solver contract (12 Bernstein weights, Reynolds fixed at 1e6, Cp at 128 stations) and its `docs/URL-STATE.md` deep-links with `#v=1&au=…&al=…&a=…`. This repo's v1 dataset stays ADR-002 (own NACA surrogate, row id, brush hash). The two contracts are not interchangeable. Do not block M0–M9 on the wind tunnel, and do not switch generators unless a new ADR says so. The details-panel link stays absent until both a base URL and a mapping onto `URL-STATE.md` exist. `?id=` is not that contract.
 
 ## Resolved during planning

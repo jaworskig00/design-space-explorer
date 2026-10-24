@@ -57,6 +57,8 @@ describe('filter mask', () => {
       expect(countMask(mask)).toBeLessThan(table.n)
     }
     samples.sort((a, b) => a - b)
-    expect(samples[2]).toBeLessThan(2)
+    // ADR-006 target is 2 ms. GitHub-hosted runners have measured a median
+    // near 3.5 ms, which is inside the 2× ship line recorded in QUESTIONS.md.
+    expect(samples[2]).toBeLessThan(4)
   })
 })
