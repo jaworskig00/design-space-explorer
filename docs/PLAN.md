@@ -150,7 +150,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M0.5 Git hooks
 
-- [ ] husky pre-commit runs lint-staged (Prettier, then ESLint) on staged JS/TS/CSS/MD. It does not run Vitest or Playwright.
+- [x] husky pre-commit runs lint-staged (Prettier, then ESLint) on staged JS/TS/CSS/MD. It does not run Vitest or Playwright.
 - Acceptance: a staged formatting error is rewritten or rejected by the hook. Document the hook in `AGENTS.md` only if the command differs from what is already written.
 - Verify: `git commit` on a tiny formatted change succeeds. Amend only if the hook rewrites files and the usual amend rules allow it; otherwise a second commit is fine. Prefer one commit for M0.5 that is already formatted, and prove the hook with `pnpm exec lint-staged`.
 

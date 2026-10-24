@@ -20,6 +20,12 @@ Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 - Verified: `pnpm test && pnpm build` (JS gzip about 68 KB).
 - Follow-ups: none.
 
+## 2026-10-24 — M0.5 pre-commit
+
+- What: husky runs lint-staged (Prettier, then ESLint on code). The hook does not run Vitest or Playwright.
+- Verified: `pnpm exec lint-staged` on the staged package files.
+- Follow-ups: none.
+
 ## 2026-10-24 — M0.4 Playwright smoke
 
 - What: Chromium smoke test loads the production preview and checks the title plus five region headings. Preview binds to 127.0.0.1.
