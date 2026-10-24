@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-24 — GitHub Pages
+
+- What: Publish `dist/` from `main` to GitHub Pages. The Pages build sets `base` to `/design-space-explorer/`. Local dev and CI stay at `/`. Dataset fetches follow `import.meta.env.BASE_URL`. No dataset, view, or wind-tunnel change.
+- Verified: production build with `PAGES_BASE` rewrites asset URLs; `pnpm test` still passes. The Pages workflow status is checked after the push.
+- Follow-ups: none for hosting. Linking to the wind tunnel stays a later mapping, not a deploy step.
+
 ## 2026-10-24 — M9 release, deploy left open
 
 - What: Screenshots, brush gif/webm, keyboard and accessible-name specs, ADR-006 timings, scatter drag brush, Pareto direction and click, parallel-coordinate hit testing. README and changelog cover M0–M9. Brush overlays were ignoring pointer events because `.chart .overlay` also matched the D3 brush rect; the rule is now `canvas.overlay` only. M8.4 worker: not needed. No host, no deploy workflow.

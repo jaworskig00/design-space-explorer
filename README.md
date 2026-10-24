@@ -107,7 +107,7 @@ GitHub Actions runs the same web checks on Node 22 and the Python unittest job. 
 
 ## Deploy
 
-`dist/` is a static site. No host is chosen yet, and no workflow deploys it. Cloudflare, GitHub Pages, and a VPS are all still open. See [`docs/QUESTIONS.md`](docs/QUESTIONS.md).
+The live site is [GitHub Pages](https://jaworskig00.github.io/design-space-explorer/). `main` builds `dist/` with the project base path and the Pages workflow publishes it. Local `pnpm dev` and CI keep the base at `/`.
 
 ## License
 

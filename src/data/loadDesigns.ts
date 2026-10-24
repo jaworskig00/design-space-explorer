@@ -30,10 +30,14 @@ export function tableFromSchema(
   return { n: schema.n, columns, meta }
 }
 
+function publicUrl(path: string) {
+  return `${import.meta.env.BASE_URL}${path}`
+}
+
 export async function loadDesigns(): Promise<DesignTable> {
   const [schemaRes, binaryRes] = await Promise.all([
-    fetch('/data/schema.json'),
-    fetch('/data/designs.f32'),
+    fetch(publicUrl('data/schema.json')),
+    fetch(publicUrl('data/designs.f32')),
   ])
   if (!schemaRes.ok || !binaryRes.ok)
     throw new Error('failed to load design data')
