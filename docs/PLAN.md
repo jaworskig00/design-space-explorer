@@ -144,7 +144,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 
 ### M0.4 Playwright smoke
 
-- [ ] `playwright.config.ts` builds nothing by itself. `webServer` runs `pnpm preview --strictPort --port 4173`. CI builds first. One test opens `/` and expects the title and the five region labels. Install Chromium locally once.
+- [x] `playwright.config.ts` builds nothing by itself. `webServer` runs `pnpm preview --strictPort --port 4173`. CI builds first. One test opens `/` and expects the title and the five region labels. Install Chromium locally once.
 - Acceptance: `pnpm build && pnpm e2e` passes.
 - Verify: that command.
 

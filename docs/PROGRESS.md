@@ -20,6 +20,12 @@ Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 - Verified: `pnpm test && pnpm build` (JS gzip about 68 KB).
 - Follow-ups: none.
 
+## 2026-10-24 — M0.4 Playwright smoke
+
+- What: Chromium smoke test loads the production preview and checks the title plus five region headings. Preview binds to 127.0.0.1.
+- Verified: `pnpm build && pnpm e2e` — 1 passed.
+- Follow-ups: none.
+
 ## 2026-10-24 — planning docs
 
 - What: Added the v1 plan, decisions, agent rules, and repo skeleton. No application code.
