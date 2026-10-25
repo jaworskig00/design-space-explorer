@@ -226,6 +226,89 @@ dd {
   border-radius: 8px;
 }
 
+.onboarding-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgb(8 10 14 / 72%);
+}
+
+.onboarding {
+  width: min(440px, 100%);
+  max-height: min(640px, 100%);
+  overflow: auto;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 18px 16px;
+  box-shadow: var(--shadow);
+}
+
+.onboarding h2 {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--text);
+}
+
+.onboarding p,
+.onboarding li {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.onboarding ul {
+  margin: 0 0 12px;
+  padding-left: 1.1rem;
+}
+
+.onboarding-keys {
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin: 0 0 14px;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.keys div {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 8px;
+  align-items: baseline;
+}
+
+.keys dt {
+  margin: 0;
+}
+
+.keys dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+kbd {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 1px 5px;
+  background: #10151c;
+  color: var(--text);
+}
+
 @media (max-width: 980px) {
   .row,
   .row.equal {

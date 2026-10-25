@@ -1,7 +1,7 @@
 import { COLUMNS, type ColumnName } from '../data/columns.ts'
 import { useExplorer } from '../state/explorerStore.ts'
 
-export function Toolbar() {
+export function Toolbar({ onHelp }: { onHelp: () => void }) {
   const ready = useExplorer((state) => state.ready)
   const matchCount = useExplorer((state) => state.matchCount)
   const colorColumn = useExplorer((state) => state.colorColumn)
@@ -34,6 +34,9 @@ export function Toolbar() {
           ))}
         </select>
       </label>
+      <button type="button" data-testid="show-help" onClick={onHelp}>
+        How to use
+      </button>
       <button
         type="button"
         data-testid="reset-filters"

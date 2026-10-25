@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-25 — first-visit guide
+
+- What: A dialog on the first visit, and a **How to use** button, explains brushing, pinning, scatter zoom, and the keyboard. Dismissing it is remembered in `localStorage`. Automated browsers skip the automatic open so the existing specs keep driving the charts.
+- Verified: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`. Playwright covers first-visit dismissal across reload, reopening from the toolbar, and Escape then `→` still pinning a design. Keyboard and smoke specs still pass.
+- Follow-ups: none. No new tag.
+
 ## 2026-10-24 — GitHub Pages
 
 - What: Publish `dist/` from `main` to GitHub Pages. The Pages build sets `base` to `/design-space-explorer/`. Local dev and CI stay at `/`. Dataset fetches follow `import.meta.env.BASE_URL`. No dataset, view, or wind-tunnel change.

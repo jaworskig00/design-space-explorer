@@ -1,13 +1,14 @@
 import '@fontsource/ibm-plex-sans/latin-400.css'
 import '@fontsource/ibm-plex-sans/latin-600.css'
 import '@fontsource/ibm-plex-mono/latin-400.css'
-import { useEffect, useLayoutEffect } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Histogram } from './charts/Histogram.tsx'
 import { ParallelCoordinates } from './charts/ParallelCoordinates.tsx'
 import { ParetoPlot } from './charts/Pareto.tsx'
 import { ScatterPlot } from './charts/Scatter.tsx'
 import { Splom } from './charts/Splom.tsx'
 import { DetailsPanel } from './components/DetailsPanel.tsx'
+import { Onboarding } from './components/Onboarding.tsx'
 import { RangeFields } from './components/RangeFields.tsx'
 import { Toolbar } from './components/Toolbar.tsx'
 import { initTable } from './data/columns.ts'
@@ -15,8 +16,27 @@ import { loadDesigns } from './data/loadDesigns.ts'
 import { hashFor, decodeState } from './lib/urlState.ts'
 import { useExplorer } from './state/explorerStore.ts'
 
+function firstVisit() {
+  if (navigator.webdriver) return false
+  try {
+    return localStorage.getItem('dse-onboarding') !== '1'
+  } catch {
+    return false
+  }
+}
+
 export default function App() {
   const ready = useExplorer((state) => state.ready)
+  const [helpOpen, setHelpOpen] = useState(firstVisit)
+
+  const closeHelp = useCallback(() => {
+    try {
+      localStorage.setItem('dse-onboarding', '1')
+    } catch {
+      /* private mode can reject storage; the panel still closes */
+    }
+    setHelpOpen(false)
+  }, [])
 
   useEffect(() => {
     let cancel = false
@@ -87,7 +107,8 @@ export default function App() {
 
   return (
     <div className="app">
-      <Toolbar />
+      <Toolbar onHelp={() => setHelpOpen(true)} />
+      <Onboarding open={helpOpen} onClose={closeHelp} />
       <RangeFields />
       {ready ? (
         <>

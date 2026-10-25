@@ -48,7 +48,7 @@ The generator does not call a flow solver. See [`data/SCHEMA.md`](data/SCHEMA.md
 
 Default scatter is angle of attack against lift coefficient, colored by lift-to-drag with cividis. The Pareto plot minimizes drag and maximizes lift among feasible rows only. Infeasible points stay on the plot as ghosts and never sit on the front.
 
-Keyboard, when focus is not in a field: `→` / `←` walk the filtered designs, `Escape` clears the pin, `r` clears brushes, `[` / `]` change the color column.
+**How to use** opens the same notes on demand, and again on the first visit. Keyboard, when focus is not in a field: `→` / `←` walk the filtered designs, `Escape` clears the pin, `r` clears brushes, `[` / `]` change the color column.
 
 ## Architecture
 
