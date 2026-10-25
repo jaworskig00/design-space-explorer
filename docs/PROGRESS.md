@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-25 — shortcut card
+
+- What: A fixed **?** in the bottom-left corner opens a short card (gestures and keys) without covering the whole dashboard. `?` toggles it, Escape closes it and leaves the pin alone, and **Open the full guide** still shows the first-visit notes. The toolbar button stays.
+- Verified: `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build`. Playwright checks the button stays in the viewport after scrolling, the `?` / Escape keys, and opening the full guide.
+- Follow-ups: none.
+
 ## 2026-10-25 — first-visit guide
 
 - What: A dialog on the first visit, and a **How to use** button, explains brushing, pinning, scatter zoom, and the keyboard. Dismissing it is remembered in `localStorage`. Automated browsers skip the automatic open so the existing specs keep driving the charts.

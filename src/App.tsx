@@ -8,6 +8,7 @@ import { ParetoPlot } from './charts/Pareto.tsx'
 import { ScatterPlot } from './charts/Scatter.tsx'
 import { Splom } from './charts/Splom.tsx'
 import { DetailsPanel } from './components/DetailsPanel.tsx'
+import { HelpButton } from './components/HelpButton.tsx'
 import { Onboarding } from './components/Onboarding.tsx'
 import { RangeFields } from './components/RangeFields.tsx'
 import { Toolbar } from './components/Toolbar.tsx'
@@ -109,6 +110,7 @@ export default function App() {
     <div className="app">
       <Toolbar onHelp={() => setHelpOpen(true)} />
       <Onboarding open={helpOpen} onClose={closeHelp} />
+      <HelpButton onOpenGuide={() => setHelpOpen(true)} />
       <RangeFields />
       {ready ? (
         <>

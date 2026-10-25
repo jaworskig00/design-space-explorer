@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef } from 'react'
+import { ShortcutList } from './ShortcutList.tsx'
 
 export function Onboarding({
   open,
@@ -57,32 +58,7 @@ export function Onboarding({
           <li>Copy link shares the filter and the pinned design.</li>
         </ul>
         <p className="onboarding-keys">When you are not typing in a field:</p>
-        <dl className="keys">
-          <div>
-            <dt>
-              <kbd>→</kbd> <kbd>←</kbd>
-            </dt>
-            <dd>Walk the filtered designs</dd>
-          </div>
-          <div>
-            <dt>
-              <kbd>Esc</kbd>
-            </dt>
-            <dd>Clear the pin</dd>
-          </div>
-          <div>
-            <dt>
-              <kbd>r</kbd>
-            </dt>
-            <dd>Reset every filter</dd>
-          </div>
-          <div>
-            <dt>
-              <kbd>[</kbd> <kbd>]</kbd>
-            </dt>
-            <dd>Change the color column</dd>
-          </div>
-        </dl>
+        <ShortcutList question="Open the shortcut card in the corner" />
         <button
           ref={closeRef}
           type="button"
