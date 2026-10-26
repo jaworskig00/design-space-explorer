@@ -2,6 +2,12 @@
 
 Append one entry after each task in `docs/PLAN.md`. Do not rewrite history.
 
+## 2026-10-26 — shape link
+
+- What: The details panel links a pinned section to the deployed wind tunnel as `naca` plus angle of attack. ADR-012 supersedes the button ban in ADR-009. ADR-002 still owns this dataset. An empty `VITE_WIND_TUNNEL_URL` hides the link; otherwise the Pages URL is the default. Out-of-range camber and thickness are sent as sampled.
+- Verified: `pnpm test` for the hash. Playwright clicks the scatter and checks the href against that row. The label is "Open this shape in the wind tunnel".
+- Follow-ups: none. No new tag.
+
 ## 2026-10-25 — shortcut card
 
 - What: A fixed **?** in the bottom-left corner opens a short card (gestures and keys) without covering the whole dashboard. `?` toggles it, Escape closes it and leaves the pin alone, and **Open the full guide** still shows the first-visit notes. The toolbar button stays.

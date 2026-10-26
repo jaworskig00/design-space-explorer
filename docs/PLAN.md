@@ -97,7 +97,7 @@ One line each. Rationale is in the ADRs.
 - Canvas and React Strict Mode double-mount. Every chart effect must cancel animation frames and `brush.on('.')` / `zoom.on('.')` on cleanup.
 - Putting the table or the hover id into React state will drop frames. ADR-004 forbids it.
 - Drag-to-pan and drag-to-brush cannot share the same gesture. ADR-011 is the rule.
-- `neural-wind-tunnel` already defines a different dataset and deep-link contract. v1 follows ADR-002 and ADR-009 anyway. Do not import that repo's stub CSV unless a new ADR says so. The open note is in `docs/QUESTIONS.md`.
+- `neural-wind-tunnel` uses a different dataset. This app stays on ADR-002. ADR-012 allows a shape-only link and still forbids importing that repo's table.
 
 ## Definition of done for v1
 
@@ -325,7 +325,7 @@ Suggested tags, once the last task of a milestone is green: `v0.1.0-m0`, `v0.2.0
 ### M7.3 Details and linking
 
 - [x] `src/components/DetailsPanel.tsx` lists every column with units for `selectedId`. Clicking a scatter point, a parallel-coordinate line hit, or a Pareto point sets `selectedId`. Hover highlights that row on every canvas without pinning. The nearest-NACA label is marked as nearest (ADR-002).
-- Acceptance: Playwright clicks the scatter, expects `data-testid="details"` to contain the id and a camber value, and expects the shape preview. The wind-tunnel link is absent because `VITE_WIND_TUNNEL_URL` is unset.
+- Acceptance: Playwright clicks the scatter, expects `data-testid="details"` to contain the id and a camber value, and expects the shape preview. ADR-012 adds the shape link: the href carries that row's `naca` triple and `alpha_deg`. An empty `VITE_WIND_TUNNEL_URL` still hides it.
 - Verify: `pnpm e2e`. Keep `docs/screenshots/details.png`.
 
 ---

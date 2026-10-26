@@ -219,6 +219,15 @@ dd {
   color: var(--muted);
 }
 
+.tunnel-link {
+  margin: 10px 0 8px;
+  font-size: 0.85rem;
+}
+
+.tunnel-link a {
+  color: var(--accent);
+}
+
 .panel svg[data-testid='shape-preview'] {
   width: 100%;
   height: 90px;

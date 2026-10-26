@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { windTunnelHref } from '../src/lib/windTunnel.ts'
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/')
@@ -117,7 +118,20 @@ test('clicking the scatter pins a design', async ({ page }) => {
   await expect(page.getByTestId('details')).toContainText(`id ${point?.id}`)
   await expect(page.getByTestId('details')).toContainText('Camber')
   await expect(page.getByTestId('shape-preview')).toBeVisible()
-  await expect(page.getByRole('link')).toHaveCount(0)
+  const row = await page.evaluate(
+    (id) => window.__explorer?.row(id) ?? null,
+    point?.id ?? -1,
+  )
+  expect(row).not.toBeNull()
+  const href = windTunnelHref(undefined, {
+    camber: row?.camber ?? 0,
+    camberPos: row?.camber_pos ?? 0,
+    thickness: row?.thickness ?? 0,
+    alphaDeg: row?.alpha_deg ?? 0,
+  })
+  const link = page.getByTestId('wind-tunnel-link')
+  await expect(link).toHaveText('Open this shape in the wind tunnel')
+  await expect(link).toHaveAttribute('href', href ?? '')
 })
 
 test('reduced motion skips the axis transition', async ({ browser }) => {

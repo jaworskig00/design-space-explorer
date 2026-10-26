@@ -22,13 +22,13 @@ State is Zustand. The row table is not in the store (ADR-004).
 
 Latin hypercube, `numpy.random.Generator(np.random.PCG64(42))`, n = 10,000, five dimensions. Per dimension, one uniform draw inside each stratum, then a permutation. No SciPy.
 
-| Column | Range |
-| --- | --- |
-| `camber` m | [0, 0.09] fraction of chord |
-| `camber_pos` p | [0.20, 0.70] |
-| `thickness` t | [0.06, 0.24] |
-| `alpha_deg` | [-4, 16] |
-| `log10_reynolds` | [log10(2e5), log10(5e6)] |
+| Column           | Range                       |
+| ---------------- | --------------------------- |
+| `camber` m       | [0, 0.09] fraction of chord |
+| `camber_pos` p   | [0.20, 0.70]                |
+| `thickness` t    | [0.06, 0.24]                |
+| `alpha_deg`      | [-4, 16]                    |
+| `log10_reynolds` | [log10(2e5), log10(5e6)]    |
 
 `m < 1e-4` is treated as zero camber in the geometry and in the surrogate. The stored `camber` value stays the sampled number.
 
@@ -91,14 +91,14 @@ Commit the binary. It is small. No Git LFS.
 
 **Status:** accepted
 
-| View | Marks | Chrome |
-| --- | --- | --- |
-| Parallel coordinates | Canvas polylines | SVG axes and 1D brushes |
-| SPLOM | One canvas for every cell | SVG brushes; axes on the left column and bottom row |
-| Focused scatter | Canvas points | SVG axes, zoom, 2D brush |
-| Pareto | Canvas points, SVG front polyline | SVG axes and 2D brush |
-| Histograms | SVG bars (40 bins) | SVG brush |
-| Shape | SVG closed path | none |
+| View                 | Marks                             | Chrome                                              |
+| -------------------- | --------------------------------- | --------------------------------------------------- |
+| Parallel coordinates | Canvas polylines                  | SVG axes and 1D brushes                             |
+| SPLOM                | One canvas for every cell         | SVG brushes; axes on the left column and bottom row |
+| Focused scatter      | Canvas points                     | SVG axes, zoom, 2D brush                            |
+| Pareto               | Canvas points, SVG front polyline | SVG axes and 2D brush                               |
+| Histograms           | SVG bars (40 bins)                | SVG brush                                           |
+| Shape                | SVG closed path                   | none                                                |
 
 Context lines (all rows) use a low alpha. In-filter marks use a higher alpha. Hover and the pinned design redraw on a second canvas so a hover does not repaint the base layer.
 
@@ -189,14 +189,14 @@ Dominated feasible points are dim. The front is a polyline through the non-domin
 
 Fixture `data/fixtures/pareto-6.json` (hand-written, not generated) for maximize `cl`, minimize `cd`:
 
-| cl | cd | feasible | on front |
-| --- | --- | --- | --- |
-| 0.5 | 0.02 | yes | yes |
-| 0.8 | 0.03 | yes | no |
-| 1.0 | 0.025 | yes | yes |
-| 1.2 | 0.04 | yes | yes |
-| 0.4 | 0.05 | yes | no |
-| 0.9 | 0.015 | no | no |
+| cl  | cd    | feasible | on front |
+| --- | ----- | -------- | -------- |
+| 0.5 | 0.02  | yes      | yes      |
+| 0.8 | 0.03  | yes      | no       |
+| 1.0 | 0.025 | yes      | yes      |
+| 1.2 | 0.04  | yes      | yes      |
+| 0.4 | 0.05  | yes      | no       |
+| 0.9 | 0.015 | no       | no       |
 
 The last point is non-dominated on the numbers and still excluded because it is infeasible.
 
@@ -219,7 +219,7 @@ Pre-commit is husky + lint-staged: Prettier and ESLint on staged files only. The
 
 ## ADR-009 — Wind tunnel boundary
 
-**Status:** accepted
+**Status:** superseded by ADR-012
 
 This repo does not depend on the Neural Wind Tunnel. `data/SCHEMA.md` is the contract for this app's own synthetic sample. The details panel does not render a wind-tunnel link in v1.
 
@@ -236,3 +236,20 @@ No surrogate model in the browser, no embedding, no LLM filter, no API key. Natu
 **Status:** accepted
 
 Recorded separately because it is easy to "fix" later and break tests. Drag on the focused scatter and on the Pareto plot brushes. It does not pan. Panning is Shift+drag. Zoom is the wheel. See ADR-005.
+
+## ADR-012 — Shape link into the wind tunnel
+
+**Status:** accepted
+
+Supersedes the button ban in ADR-009. ADR-002 stays the dataset: this app still draws its own synthetic NACA sample and its own surrogate. It does not consume the tunnel table.
+
+ADR-009 refused a details-panel link for two reasons. Both are gone as of 2026-10-26.
+
+- The tunnel is deployed at <https://jaworskig00.github.io/neural-wind-tunnel/>.
+- Its `docs/URL-STATE.md` now accepts a section as three fractions of chord, `#v=1&naca=<camber>,<camber_pos>,<thickness>&a=<alpha_deg>&view=both`. A row already stores those four numbers. No CST fit is required on this side.
+
+The link carries a shape, not a result. The label is "Open this shape in the wind tunnel". Reynolds number stays out of the hash: the tunnel is fixed at 1e6 and this sample spans 2e5–5e6. Lift, drag, and moment stay out too. The tunnel's coefficients come from a different surrogate. The tunnel already says when Reynolds did not travel; this app does not repeat that notice and does not imply the numbers would match.
+
+Shapes past the tunnel's training box (about 6% camber and 20% thickness; this space runs to 9% and 24%) are sent as sampled. The tunnel clamps them and names what was asked.
+
+`VITE_WIND_TUNNEL_URL` overrides the base. When it is unset, the deployed Pages URL is used. An empty value hides the link. The builder lives in `src/lib/windTunnel.ts`, not under `src/data/`.

@@ -4,9 +4,17 @@ export type DrawTimings = {
   splom?: number
 }
 
+export type ExplorerRow = {
+  camber: number
+  camber_pos: number
+  thickness: number
+  alpha_deg: number
+}
+
 export type ExplorerTestApi = {
   setBrush: (column: string, range: [number, number] | null) => void
   hitTestScatter: (x: number, y: number) => number | null
+  row: (id: number) => ExplorerRow | null
 }
 
 declare global {

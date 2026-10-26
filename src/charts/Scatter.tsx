@@ -214,6 +214,26 @@ export function ScatterPlot() {
         }
       },
       hitTestScatter: (x, y) => findPoint(x, y),
+      row: (id) => {
+        const camber = table.columns.camber[id]
+        const camberPos = table.columns.camber_pos[id]
+        const thickness = table.columns.thickness[id]
+        const alpha = table.columns.alpha_deg[id]
+        if (
+          camber == null ||
+          camberPos == null ||
+          thickness == null ||
+          alpha == null
+        ) {
+          return null
+        }
+        return {
+          camber,
+          camber_pos: camberPos,
+          thickness,
+          alpha_deg: alpha,
+        }
+      },
     })
 
     draw()

@@ -12,6 +12,8 @@ Linked views over 10,000 synthetic NACA 4-digit airfoils. Brush one axis and the
 
 The outline is the real NACA 4-digit closed-trailing-edge geometry. Lift, drag, and pitching moment are **not** from XFOIL, a panel code, or CFD. They come from the documented surrogate in [`data/MODEL.md`](data/MODEL.md) (ADR-002 in [`docs/DECISIONS.md`](docs/DECISIONS.md)). A row is feasible when stall margin is at least 0 and thickness is between 8% and 20% of chord. The nearest NACA label is the nearest 4-digit code, not an exact match.
 
+A pinned design can open **this shape** in the [wind tunnel](https://jaworskig00.github.io/neural-wind-tunnel/). The link sends camber, camber position, thickness, and angle of attack (ADR-012). It does not send Reynolds number or these coefficients. The tunnel evaluates the section with its own surrogate.
+
 ## Run
 
 Node 22 or newer and pnpm 10.
